@@ -8,7 +8,7 @@
 ## ToDos
 
 ### fehlt
-- ESLint einrichten (Übungsbatt 7/Aufgabe 3)
+- ESLint überprüfen (Übungsbatt 7/Aufgabe 3.5 und 3.6)
 
 ### erledigt
 - Prettier-Konfiguration
