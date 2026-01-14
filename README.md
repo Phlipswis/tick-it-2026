@@ -1,16 +1,13 @@
 # tick.it
 
 ## Styleguide
-
 ### Coloors
+https://coolors.co/palette/97dffc-858ae3-613dc1-4e148c-2c0735
 
 
 ## ToDos
-
 ### fehlt
-- ESLint überprüfen (Übungsbatt 7/Aufgabe 3.5 und 3.6)
 
 ### erledigt
-- Prettier-Konfiguration
-- Node.js, pnpm, Vite Setup
-- TailwindCSS Integration
+- Prettier, Node.js, pnpm, Vite, TailwindCSS, ESLint
+- 

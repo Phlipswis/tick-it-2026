@@ -3,3 +3,13 @@
 /* -------------------------- */
 
 @import 'tailwindcss';
+
+/* ------------------------ */
+/*      Global Styles       */
+/* ------------------------ */
+
+/* Standard Dark Mode */
+:root {
+  --bg-color: #2C0735;
+  --text-color: #ffffff;
+}
