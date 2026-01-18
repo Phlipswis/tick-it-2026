@@ -3,13 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="styles/main.css" />
-    <link rel="stylesheet" href="styles/index.css" />
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <link rel="stylesheet" href="./src/styles/board.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Startseite</title>
   </head>
 
   <body>
-    <section class="test" id="eins"> Test </section>
+    <header>
+      <div>tick.it</div>
+    </header>
+
+    <div class="main">
+      <div id="controls">
+        <button id="add-card">Add Card</button>
+        <div id="trash" class="trash">Remove Card</div>
+      </div>
+
+      <div class="board">
+        <!-- Lane 1 -->
+        <div id="lane-backlog" class="lane">
+          <h2>Backlog</h2>
+        </div>
+
+        <!-- Lane 2 -->
+        <div id="lane-in-progress" class="lane">
+          <h2>In Progress</h2>
+        </div>
+
+        <!-- Lane 3 -->
+        <div id="lane-review" class="lane">
+          <h2>Review</h2>
+        </div>
+
+        <!-- Lane 4 -->
+        <div id="lane-done" class="lane">
+          <h2>Done</h2>
+        </div>
+      </div>
+    </div>
   </body>
+
+  <script type="module" src="./src/scripts/board.ts"></script>
 </html>
