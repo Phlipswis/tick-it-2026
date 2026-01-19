@@ -5,7 +5,7 @@ const backlog = document.getElementById('lane-backlog');
 const inProgress = document.getElementById('lane-in-progress');
 const review = document.getElementById('lane-review');
 const done = document.getElementById('lane-done');
-const newCardBtn = document.getElementById('add-card');
+const newCardBtn = document.getElementById('addcard');
 const trash = document.getElementById('trash');
 
 let cardCounter = 0;
