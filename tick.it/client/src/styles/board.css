@@ -29,12 +29,66 @@
 /*      Cards      */
 /* --------------- */
 .card {
-  cursor: move;
-  border-radius: 0.25rem;
-  background-color: var(--text-color);
-  padding: 0.75rem;
-  color: var(--bg-color);
+  cursor: pointer;
+  border-radius: 0.5rem;
+  background-color: #1a0a21;
+  border: 2px solid #4a3a5a;
+  padding: 1rem;
+  color: var(--text-color);
+  margin-bottom: 0.75rem;
+  transition: all 0.2s;
+  min-width: 250px;
+}
+
+.card:hover {
+  border-color: var(--nav-bg-color);
+  box-shadow: 0 4px 12px rgba(133, 138, 227, 0.3);
+  transform: translateY(-2px);
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.card-description {
+  font-size: 0.9rem;
+  color: #b4a4c4;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid #4a3a5a;
+}
+
+.card-deadline {
+  font-size: 0.85rem;
+  color: #858ae3;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.card-deadline.overdue {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.card-deadline::before {
+  content: '📅';
 }
 
 /* --------------- */
@@ -43,15 +97,22 @@
 #trash {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 10px;
   margin-top: 2rem;
   margin-bottom: 20px;
-  padding: 0.5rem 1rem;
+  padding: 1rem 2rem;
   border-radius: 0.5rem;
-  border: none;
-  color: red;
-  border: 2px dashed red;
-  padding: 20px;
+  border: 2px dashed #ff6b6b;
+  color: #ff6b6b;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-height: 60px;
+}
+
+#trash:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+  border-color: #ff4757;
 }
 
 /* ---------------------------- */
@@ -67,6 +128,10 @@
 
   .lane {
     width: 90%;
+  }
+
+  .card {
+    min-width: auto;
   }
 }
 
@@ -90,7 +155,7 @@
 /* ----------------------------- */
 /*      Desktop (>= 1920px)      */
 /* ----------------------------- */
-@media (min-width: 1919px) {
+@media (min-width: 1920px) {
   .board {
     flex-direction: row;
     justify-content: center;

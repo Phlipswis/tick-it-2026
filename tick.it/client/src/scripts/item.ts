@@ -8,6 +8,7 @@ export type Item = {
   id: string;
   titel: string;
   beschreibung?: string;
+  deadline?: string;
   date?: string;
   lane: Lane;
 };
