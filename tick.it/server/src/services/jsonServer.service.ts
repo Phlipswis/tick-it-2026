@@ -12,14 +12,15 @@ export * as JsonService from './jsonServer.service';
  */
 export async function getAllItems(): Promise<Item[]> {
   const url = `http://${hostname}:${jsonPort}/items`;
-
   try {
-    const response = await fetch(url);
-
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'node',
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
     return (await response.json()) as Item[];
   } catch (error) {
     console.error('Fehler beim Abrufen der Items:', error);
@@ -35,21 +36,49 @@ export async function getAllItems(): Promise<Item[]> {
  */
 export async function createItem(jsonPayload: string): Promise<string> {
   const url = `http://${hostname}:${jsonPort}/items`;
-
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'User-Agent': 'node',
     },
     body: jsonPayload,
   });
-
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(
+      `HTTP error! status: ${response.status}, body: ${errorText}`,
+    );
   }
-
   const responseData = await response.json();
   return JSON.stringify(responseData);
+}
+
+// ===== UPDATE: Item aktualisieren =====
+/**
+ * Updates an item by id.
+ * @param id - ID des Items
+ * @param jsonPayload - The JSON payload with updates
+ */
+export async function updateItem(
+  id: string,
+  jsonPayload: string,
+): Promise<void> {
+  const url = `http://${hostname}:${jsonPort}/items/${id}`;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'node',
+    },
+    body: jsonPayload,
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      `HTTP error! status: ${response.status}, body: ${errorText}`,
+    );
+  }
 }
 
 // ===== DELETE: Item löschen =====
@@ -59,12 +88,16 @@ export async function createItem(jsonPayload: string): Promise<string> {
  */
 export async function deleteItem(id: string): Promise<void> {
   const url = `http://${hostname}:${jsonPort}/items/${id}`;
-
   const response = await fetch(url, {
     method: 'DELETE',
+    headers: {
+      'User-Agent': 'node',
+    },
   });
-
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(
+      `HTTP error! status: ${response.status}, body: ${errorText}`,
+    );
   }
 }

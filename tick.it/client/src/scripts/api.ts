@@ -8,11 +8,9 @@ export async function fetchPost(item: Omit<Item, 'id'>): Promise<Item> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item),
     });
-
     if (!response.ok) {
       throw new Error(`Fehler beim Speichern: HTTP ${response.status}`);
     }
-
     const createdItem: Item = await response.json();
     window.dispatchEvent(new CustomEvent('itemAdded'));
     return createdItem;
@@ -51,7 +49,6 @@ export async function fetchPatch(
       },
       body: JSON.stringify(updates),
     });
-
     if (!response.ok) {
       console.error(`Fehler beim Update: HTTP ${response.status}`);
     }
@@ -63,12 +60,10 @@ export async function fetchPatch(
 // DELETE: Item anhand der ID löschen
 export async function fetchDelete(id: string | number): Promise<void> {
   const numericId = typeof id === 'string' ? Number(id) : id;
-
   if (isNaN(numericId)) {
     console.error('Ungültige ID zum Löschen:', id);
     return;
   }
-
   try {
     const response = await fetch(
       `http://127.0.0.1:3001/api/items/${numericId}`,
@@ -76,7 +71,6 @@ export async function fetchDelete(id: string | number): Promise<void> {
         method: 'DELETE',
       },
     );
-
     if (!response.ok) {
       console.error(`Fehler beim Löschen: HTTP ${response.status}`);
     } else {

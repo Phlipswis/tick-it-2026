@@ -11,10 +11,18 @@ export const itemRouter = Router();
  */
 export const itemController = new ItemController();
 
-// Create GET route for retrieving items based on the search query parameter
-// Since the base route is '/api/items', the full route is GET '/api/items/'
+// GET: Alle Items abrufen
+// Route: GET '/api/items/'
 itemRouter.get('/', itemController.getItem);
 
-// Create POST route to create a new item
-// Since the base route is '/api/items', the full route is POST '/api/items/'
+// POST: Neues Item erstellen
+// Route: POST '/api/items/'
 itemRouter.post('/', itemController.createItem);
+
+// PATCH: Item aktualisieren
+// Route: PATCH '/api/items/:id'
+itemRouter.patch('/:id', itemController.updateItem);
+
+// DELETE: Item löschen
+// Route: DELETE '/api/items/:id'
+itemRouter.delete('/:id', itemController.deleteItem);
