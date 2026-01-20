@@ -1,142 +1,104 @@
-// -------------------------
-// DOM-Elemente referenzieren
-// -------------------------
-const backlog = document.getElementById('lane-backlog');
-const inProgress = document.getElementById('lane-in-progress');
-const review = document.getElementById('lane-review');
-const done = document.getElementById('lane-done');
-const newCardBtn = document.getElementById('addcard');
+// ===== Imports =====
+import { fetchGet, fetchPatch, fetchPost, fetchDelete } from './api';
+import type { Item, Lane } from './item';
+
+// ===== DOM-Elemente =====
+const addcard = document.getElementById('addcard');
 const trash = document.getElementById('trash');
+const lanes = document.querySelectorAll<HTMLElement>('.lane');
 
-let cardCounter = 0;
-
-// -------------------------
-// Karten aus Local Storage laden
-// -------------------------
-function loadCards() {
-  const storedCards = localStorage.getItem('kanban-cards');
-  if (!storedCards) return;
-
-  const cards: { id: string; text: string; lane: string }[] =
-    JSON.parse(storedCards);
-  cards.forEach((data) => {
-    const card = document.createElement('div');
-    card.id = data.id;
-    card.className = 'card';
-    card.draggable = true;
-    card.textContent = data.text;
-    card.addEventListener('dragstart', onDragStart);
-
-    const lane = document.getElementById(data.lane);
-    lane?.appendChild(card);
-
-    // Counter hochsetzen, um Duplikate zu vermeiden
-    const num = parseInt(data.id.split('-')[1]);
-    if (num > cardCounter) cardCounter = num;
-  });
-}
-
-// -------------------------
-// Karten speichern
-// -------------------------
-function saveCards() {
-  const lanes = [
+// ===== Typprüfung =====
+function isLane(value: string): value is Lane {
+  return [
     'lane-backlog',
     'lane-in-progress',
     'lane-review',
     'lane-done',
-  ];
-  const cards: { id: string; text: string; lane: string }[] = [];
-
-  lanes.forEach((laneId) => {
-    const lane = document.getElementById(laneId);
-    if (!lane) return;
-
-    lane.querySelectorAll('.card').forEach((card) => {
-      cards.push({
-        id: card.id,
-        text: card.textContent || '',
-        lane: laneId,
-      });
-    });
-  });
-
-  localStorage.setItem('kanban-cards', JSON.stringify(cards));
+  ].includes(value);
 }
 
-// -------------------------
-// Neue Karte erstellen
-// -------------------------
-newCardBtn?.addEventListener('click', () => {
-  const cardText = prompt('Name der Karte:');
-  if (!cardText) return;
-
-  cardCounter++;
-
-  const newCard = document.createElement('div');
-  newCard.id = `card-${cardCounter}`;
-  newCard.className = 'card';
-  newCard.draggable = true;
-  newCard.textContent = cardText;
-
-  newCard.addEventListener('dragstart', onDragStart);
-
-  backlog?.appendChild(newCard);
-  saveCards(); // Änderungen speichern
-});
-
-// -------------------------
-// Trash-Bereich (Karte löschen)
-// -------------------------
-if (trash) {
-  trash.addEventListener('dragover', (event) => event.preventDefault());
-  trash.addEventListener('drop', (event: DragEvent) => {
-    event.preventDefault();
-    if (!event.dataTransfer) return;
-
-    const cardId = event.dataTransfer.getData('text/plain');
-    const card = document.getElementById(cardId);
-    if (card) card.remove();
-
-    saveCards(); // Änderungen speichern
-  });
-}
-
-// -------------------------
-// Drag & Drop für Lanes
-// -------------------------
-const lanes = [backlog, inProgress, review, done];
+// ===== Event-Listener für Lanes =====
 lanes.forEach((lane) => {
-  lane?.addEventListener('dragover', onDragOver);
-  lane?.addEventListener('drop', (event) => {
-    onDrop(event);
-    saveCards(); // Änderungen speichern
-  });
+  lane.addEventListener('dragover', (e) => e.preventDefault());
+  lane.addEventListener('drop', onDrop);
 });
 
-// -------------------------
-// Event-Handler-Funktionen
-// -------------------------
-function onDragStart(event: DragEvent) {
-  if (!event.dataTransfer || !(event.target instanceof HTMLElement)) return;
-  event.dataTransfer.setData('text/plain', event.target.id);
-}
-
-function onDragOver(event: DragEvent) {
+// ===== Drag & Drop Funktionen =====
+async function onDrop(event: DragEvent) {
   event.preventDefault();
-}
 
-function onDrop(event: DragEvent) {
-  event.preventDefault();
   if (!event.dataTransfer || !(event.currentTarget instanceof HTMLElement))
     return;
 
   const cardId = event.dataTransfer.getData('text/plain');
+  const laneId = event.currentTarget.id;
+
+  if (!isLane(laneId)) {
+    console.error('Ungültige Lane:', laneId);
+    return;
+  }
+
   const card = document.getElementById(cardId);
-  if (card) event.currentTarget.appendChild(card);
+  if (!card) return;
+
+  event.currentTarget.appendChild(card);
+  await fetchPatch(cardId, { lane: laneId });
 }
 
-// -------------------------
-// Beim Laden der Seite Karten wiederherstellen
-// -------------------------
+function onDragStart(event: DragEvent) {
+  if (!event.dataTransfer || !(event.target instanceof HTMLElement)) return;
+
+  event.dataTransfer.setData('text/plain', event.target.id);
+}
+
+// ===== Karten erzeugen & laden =====
+function createCard(item: Item) {
+  const card = document.createElement('div');
+  card.id = item.id;
+  card.className = 'card';
+  card.draggable = true;
+  card.textContent = item.titel;
+
+  card.addEventListener('dragstart', onDragStart);
+
+  document.getElementById(item.lane)?.appendChild(card);
+}
+
+async function loadCards() {
+  const items = await fetchGet();
+  if (!items) return;
+
+  for (const item of items) {
+    createCard(item);
+  }
+}
+
+// ===== Neue Karte hinzufügen =====
+addcard?.addEventListener('click', async () => {
+  const titel = prompt('Name der Karte');
+  if (!titel) return;
+
+  const newItem: Omit<Item, 'id'> = {
+    titel,
+    lane: 'lane-backlog',
+    date: new Date().toISOString(),
+  };
+
+  const createdItem: Item = await fetchPost(newItem);
+  createCard(createdItem);
+});
+
+// ===== Karte löschen (Trash) =====
+trash?.addEventListener('drop', async (event: DragEvent) => {
+  event.preventDefault();
+  if (!event.dataTransfer) return;
+
+  const cardId = event.dataTransfer.getData('text/plain');
+  document.getElementById(cardId)?.remove();
+  await fetchDelete(cardId);
+});
+
+trash?.addEventListener('dragover', (e) => e.preventDefault());
+
+// ===== Initialisierung =====
 loadCards();

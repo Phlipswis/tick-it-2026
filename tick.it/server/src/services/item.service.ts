@@ -1,22 +1,36 @@
 /**
- * Filters the given inputArray by the given categoryArray
+ * Filters items by a date range
  *
- * @param inputArray - The Item[] to be filtered.
- * @param categoryArray - The array of categories to filter by.
- * @returns Item[] that match at least one of the specified categories.
+ * @param inputArray - The Item[] to be filtered
+ * @param filter - Date range filter (from / to)
+ * @returns Item[] within the given date range
  */
+
 import { Item } from '../models/item';
 
-type filterFn = (inputArray: Item[], categoryArray: string[]) => Item[];
-
-/**
- * Filters given inputArray by given categoryArray
- */
-const filterByCategory: filterFn = (inputArray, categoryArray) => {
-  /* ToDo 2.1 */
-  /* Filter inputArray by categoryArray and return the filtered array */
-  /* ToDo 2.1 */
-  return new Array<Item>();
+export type DateFilter = {
+  from?: string; // ISO date: YYYY-MM-DD
+  to?: string; // ISO date: YYYY-MM-DD
 };
 
-export default filterByCategory;
+type FilterByDateFn = (inputArray: Item[], filter: DateFilter) => Item[];
+
+const filterByDate: FilterByDateFn = (inputArray, filter) => {
+  // No filter → return everything
+  if (!filter.from && !filter.to) {
+    return inputArray;
+  }
+
+  return inputArray.filter((item) => {
+    // Items without date are excluded
+    if (!item.date) return false;
+
+    const itemTime = new Date(item.date).getTime();
+    const fromTime = filter.from ? new Date(filter.from).getTime() : -Infinity;
+    const toTime = filter.to ? new Date(filter.to).getTime() : Infinity;
+
+    return itemTime >= fromTime && itemTime <= toTime;
+  });
+};
+
+export default filterByDate;

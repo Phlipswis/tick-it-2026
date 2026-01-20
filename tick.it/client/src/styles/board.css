@@ -23,10 +23,11 @@
   color: var(--text-color);
 }
 
-/* =========================
-   Trash Area
-   ========================= */
-.trash {
+#addcard {
+  cursor: pointer;
+}
+
+#trash {
   border: 2px dashed red;
   padding: 20px;
 }
@@ -51,7 +52,6 @@
   border-radius: 0.5rem;
   background-color: var(--bg-color);
   padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Lane Titles */
