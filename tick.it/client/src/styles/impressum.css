@@ -1,0 +1,27 @@
+h1 {
+  font-weight: bolder;
+  margin-bottom: 1rem;
+}
+
+.main {
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  color: var(--bg-color);
+}
+
+.italic {
+  font-style: italic;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navigation {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

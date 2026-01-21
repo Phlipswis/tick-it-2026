@@ -5,6 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="stylesheet" href="./src/styles/main.css" />
     <link rel="stylesheet" href="./src/styles/board.css" />
+    <link rel="stylesheet" href="./src/styles/modal.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Startseite</title>
   </head>
@@ -15,9 +16,11 @@
     </header>
 
     <div class="main">
-      <ul class="navigation">
-        <li><a href="./card.html">Add Card</a></li>
-      </ul>
+
+      <div class="actions">
+        <button id="addcard" class="addcard">Add Card</button>
+        <div id="trash" class="trash">Remove Card</div>
+      </div>
 
       <div class="board">
         <!-- Lane 1 -->
@@ -41,9 +44,60 @@
         </div>
       </div>
 
-      <div id="trash" class="trash">Remove Card</div>
+    <!-- Modal Overlay -->
+    <div id="card-modal" class="card-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title">Add new Card</h2>
+        </div>
+        <form id="card-form">
+          <input type="hidden" id="card-id" name="id" />
+
+          <div class="form-group">
+            <label for="card-title">Title *</label>
+            <input
+              type="text"
+              id="card-title"
+              name="title"
+              required
+              placeholder="Add Title..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="card-description">Description</label>
+            <textarea
+              id="card-description"
+              name="description"
+              rows="4"
+              placeholder="Add Card Description..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="card-deadline">Deadline</label>
+            <input type="date" id="card-deadline" name="deadline" />
+          </div>
+
+          <div class="modal-actions">
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" id="cancel-btn">
+                Cancel
+              </button>
+              <button type="submit" class="btn-submit" id="submit-btn">
+                Add Card
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+
+    <ul class="navigation">
+      <li><a href="./impressum.html">Impressum </a></li>
+    </ul>
   </body>
 
   <script type="module" src="./src/scripts/board.ts"></script>
+  <script type="module" src="./src/scripts/modal.ts"></script>
 </html>
