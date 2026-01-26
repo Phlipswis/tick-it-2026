@@ -25,8 +25,8 @@ export function closeModalHandler() {
   cardForm?.reset();
   editingCardId = null;
 
-  if (modalTitle) modalTitle.textContent = 'Neue Karte erstellen';
-  if (submitBtn) submitBtn.textContent = 'Karte erstellen';
+  if (modalTitle) modalTitle.textContent = 'Create new card';
+  if (submitBtn) submitBtn.textContent = 'Save';
   if (deleteBtn) deleteBtn.style.display = 'none';
 }
 
@@ -34,8 +34,8 @@ export function closeModalHandler() {
 export function openEditModal(item: Item) {
   editingCardId = item.id;
 
-  if (modalTitle) modalTitle.textContent = 'Karte bearbeiten';
-  if (submitBtn) submitBtn.textContent = 'Speichern';
+  if (modalTitle) modalTitle.textContent = 'Edit card';
+  if (submitBtn) submitBtn.textContent = 'Save';
   if (deleteBtn) deleteBtn.style.display = 'block';
 
   const titleInput = document.getElementById('card-title') as HTMLInputElement;
@@ -71,9 +71,6 @@ export function initModalListeners(itemsState: Item[]) {
   deleteBtn?.addEventListener('click', async () => {
     if (!editingCardId) return;
 
-    const confirmDelete = confirm('Möchtest du diese Karte wirklich löschen?');
-    if (!confirmDelete) return;
-
     try {
       document.getElementById(editingCardId)?.remove();
       await fetchDelete(editingCardId);
@@ -83,8 +80,8 @@ export function initModalListeners(itemsState: Item[]) {
 
       closeModalHandler();
     } catch (error) {
-      console.error('Fehler beim Löschen der Karte:', error);
-      alert('Fehler beim Löschen der Karte. Bitte versuche es erneut.');
+      console.error('Error occured while deleting card:', error);
+      alert('Error occured while deleting card, please try again.');
     }
   });
 }
@@ -155,7 +152,7 @@ cardForm?.addEventListener('submit', async (e) => {
 
     closeModalHandler();
   } catch (error) {
-    console.error('Fehler beim Speichern der Karte:', error);
-    alert('Fehler beim Speichern der Karte. Bitte versuche es erneut.');
+    console.error('Error occured while saving card:', error);
+    alert('Error occured while saving card, please try again.');
   }
 });

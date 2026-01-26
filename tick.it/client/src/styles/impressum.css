@@ -1,17 +1,30 @@
 h1 {
-  font-weight: bolder;
-  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
-  color: var(--bg-color);
+  min-height: calc(100vh - 160px);
+  color: var(--text-color);
+  padding: 2rem;
+  text-align: center;
+}
+
+.main > div {
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
 }
 
 .italic {
   font-style: italic;
+  opacity: 0.8;
+  font-size: 1rem;
 }
 
 header {
@@ -24,4 +37,14 @@ header {
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .main > div {
+    font-size: 1rem;
+  }
 }

@@ -2,21 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="./src/images/logo_pointer.svg"
+    />
     <link rel="stylesheet" href="./src/styles/main.css" />
     <link rel="stylesheet" href="./src/styles/board.css" />
     <link rel="stylesheet" href="./src/styles/modal.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Startseite</title>
+    <title>tick.it - Board</title>
   </head>
-
   <body>
     <header>
-      <div>tick.it</div>
+      <div class="logo-container">
+        <img
+          id="theme-logo"
+          src="./src/images/logo_darkmode.svg"
+          alt="tick.it logo"
+          class="header-logo"
+        />
+      </div>
+      <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light">Light</button>
+        <button class="theme-btn active" data-theme="dark">Dark</button>
+        <button class="theme-btn" data-theme="high-contrast">
+          High Contrast
+        </button>
+      </div>
     </header>
 
     <div class="main">
-
       <div class="actions">
         <button id="addcard" class="addcard">Add Card</button>
         <div id="trash" class="trash">Remove Card</div>
@@ -43,6 +59,7 @@
           <h2>Done</h2>
         </div>
       </div>
+    </div>
 
     <!-- Modal Overlay -->
     <div id="card-modal" class="card-modal">
@@ -80,24 +97,31 @@
           </div>
 
           <div class="modal-actions">
-            <div class="modal-actions">
-              <button type="button" class="btn-cancel" id="cancel-btn">
-                Cancel
-              </button>
-              <button type="submit" class="btn-submit" id="submit-btn">
-                Add Card
-              </button>
-            </div>
+            <button type="button" class="btn-cancel" id="cancel-btn">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn-cancel"
+              id="delete-btn"
+              style="display: none"
+            >
+              Delete
+            </button>
+            <button type="submit" class="btn-submit" id="submit-btn">
+              Add Card
+            </button>
           </div>
         </form>
       </div>
     </div>
 
     <ul class="navigation">
-      <li><a href="./impressum.html">Impressum </a></li>
+      <li><a href="./impressum.html">Legal Notice</a></li>
     </ul>
-  </body>
 
-  <script type="module" src="./src/scripts/board.ts"></script>
-  <script type="module" src="./src/scripts/modal.ts"></script>
+    <script type="module" src="./src/scripts/theme.ts"></script>
+    <script type="module" src="./src/scripts/board.ts"></script>
+    <script type="module" src="./src/scripts/modal.ts"></script>
+  </body>
 </html>
