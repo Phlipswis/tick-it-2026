@@ -8,7 +8,7 @@ import { itemRouter } from './routers/items.router';
 
 // Create hostname and ports
 dotenv.config({ path: path.join(__dirname, '../.env') });
-export const hostname = (process.env.HOSTNAME as string) || '127.0.0.1';
+export const hostname = (process.env.HOSTNAME as string) || '0.0.0.0';
 export const jsonPort = parseInt(process.env.JSON_PORT as string) || 3002;
 export const expressPort = parseInt(process.env.EXPRESS_PORT as string) || 3001;
 

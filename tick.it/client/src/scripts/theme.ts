@@ -23,6 +23,8 @@ function applyTheme(theme: Theme): void {
 
   // Force a reflow
   void document.documentElement.offsetHeight;
+  // https://stackoverflow.com/questions/21664940/force-browser-to-trigger-reflow-while-changing-css
+  // It just works. - Todd Howard
 
   // Set new theme
   document.documentElement.setAttribute('data-theme', theme);

@@ -2,7 +2,7 @@
 
 ## Styleguide
 ### Coloors
-https://coolors.co/palette/97dffc-858ae3-613dc1-4e148c-2c0735
+https://coolors.co/0b1622-151f2e-349ad1-9fadbd-fafafa
 
 
 ## Installiert
