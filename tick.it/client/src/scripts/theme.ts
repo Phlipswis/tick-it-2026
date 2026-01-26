@@ -13,7 +13,7 @@ function getCurrentTheme(): Theme {
   ) {
     return savedTheme;
   }
-  return 'dark';
+  return 'light';
 }
 
 // Apply theme to document

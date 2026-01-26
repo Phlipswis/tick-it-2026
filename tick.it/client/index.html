@@ -7,6 +7,13 @@
       type="image/svg+xml"
       href="./src/images/logo_pointer.svg"
     />
+    <script>
+      // Apply theme immediately before any rendering
+      (function () {
+        const theme = localStorage.getItem('tick-it-theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     <link rel="stylesheet" href="./src/styles/main.css" />
     <link rel="stylesheet" href="./src/styles/board.css" />
     <link rel="stylesheet" href="./src/styles/modal.css" />
@@ -16,19 +23,39 @@
   <body>
     <header>
       <div class="logo-container">
-        <img
-          id="theme-logo"
-          src="./src/images/logo_darkmode.svg"
-          alt="tick.it logo"
-          class="header-logo"
-        />
+        <img id="theme-logo" src="" alt="tick.it logo" class="header-logo" />
+        <script>
+          // Set initial logo based on theme immediately
+          (function () {
+            const theme =
+              document.documentElement.getAttribute('data-theme') || 'light';
+            const logoMap = {
+              light: './src/images/logo_lightmode.svg',
+              dark: './src/images/logo_darkmode.svg',
+              'high-contrast': './src/images/logo_high_contrast.svg',
+            };
+            document.getElementById('theme-logo').src = logoMap[theme];
+          })();
+        </script>
       </div>
       <div class="theme-switcher">
         <button class="theme-btn" data-theme="light">Light</button>
-        <button class="theme-btn active" data-theme="dark">Dark</button>
+        <button class="theme-btn" data-theme="dark">Dark</button>
         <button class="theme-btn" data-theme="high-contrast">
           High Contrast
         </button>
+        <script>
+          // Set active button immediately based on current theme
+          (function () {
+            const theme =
+              document.documentElement.getAttribute('data-theme') || 'light';
+            document.querySelectorAll('.theme-btn').forEach((btn) => {
+              if (btn.getAttribute('data-theme') === theme) {
+                btn.classList.add('active');
+              }
+            });
+          })();
+        </script>
       </div>
     </header>
 
@@ -117,7 +144,7 @@
     </div>
 
     <ul class="navigation">
-      <li><a href="./impressum.html">Legal Notice</a></li>
+      <li><a href="./impressum.html">Impressum</a></li>
     </ul>
 
     <script type="module" src="./src/scripts/theme.ts"></script>
