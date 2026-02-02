@@ -72,7 +72,7 @@ export async function fetchPost(item: Omit<Item, 'id'>): Promise<Item> {
 }
 
 // READ: Retrieve items from storage
-export async function fetchGet(url?: string): Promise<Item[] | null> {
+export async function fetchGet(_url?: string): Promise<Item[] | null> {
   try {
     return loadFromStorage();
   } catch (error) {

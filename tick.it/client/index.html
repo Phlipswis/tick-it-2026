@@ -5,7 +5,7 @@
     <link
       rel="icon"
       type="image/svg+xml"
-      href="./src/images/logo_pointer.svg"
+      href="./public/images/logo_pointer.svg"
     />
     <script>
       // Apply theme immediately before any rendering
@@ -30,9 +30,9 @@
             const theme =
               document.documentElement.getAttribute('data-theme') || 'light';
             const logoMap = {
-              light: './src/images/logo_lightmode.svg',
-              dark: './src/images/logo_darkmode.svg',
-              'high-contrast': './src/images/logo_high_contrast.svg',
+              light: './images/logo_lightmode.svg',
+              dark: './images/logo_darkmode.svg',
+              'high-contrast': './images/logo_high_contrast.svg',
             };
             document.getElementById('theme-logo').src = logoMap[theme];
           })();

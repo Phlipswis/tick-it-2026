@@ -51,9 +51,9 @@ function updateLogo(theme: Theme): void {
   if (!logoElement) return;
 
   const logoMap: Record<Theme, string> = {
-    light: './src/images/logo_lightmode.svg',
-    dark: './src/images/logo_darkmode.svg',
-    'high-contrast': './src/images/logo_high_contrast.svg',
+    light: './images/logo_lightmode.svg',
+    dark: './images/logo_darkmode.svg',
+    'high-contrast': './images/logo_high_contrast.svg'
   };
 
   logoElement.src = logoMap[theme];
