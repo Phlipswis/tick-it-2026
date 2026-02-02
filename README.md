@@ -22,11 +22,13 @@ tick.it ist eine webbasierte Kanban-Board-Anwendung zur Verwaltung von Aufgaben 
 
 ### Technischer Überblick:
 
-- Frontend: HTML, CSS, TypeScript
-- Backend: Node.js mit Express
-- Datenhaltung: JSON-basierter Service 
-- Kommunikation: REST-API
-- State-Handling: Synchronisation zwischen UI und Backend
+| Komponente          | Technologie                          | Beschreibung                     |
+|---------------------|--------------------------------------|----------------------------------|
+| **Frontend**        | HTML, CSS, TypeScript                | Vanilla JS, keine Frameworks     |
+| **Backend**         | Node.js mit Express                  | REST-API Server (Port 3001)      |
+| **Datenhaltung**    | JSON-basierter Service               | json-server + db.json (Port 3002)|
+| **Kommunikation**   | REST-API                             | GET, POST, PATCH, DELETE         |
+| **State-Handling**  | Synchronisation zwischen UI & Backend| Lokales Array + API-Calls        |
 
 ## Dokumentation von KI-Einsatz
 - Unterstützung in der Codegenerierung mit Claude Sonnet 4.5
