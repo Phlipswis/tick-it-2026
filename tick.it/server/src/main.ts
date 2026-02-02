@@ -1,14 +1,24 @@
 // Required modules
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import jsonServer from 'json-server';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+
 // Own modules
-import { itemRouter } from './routers/items.router';
+import { itemRouter } from './routers/items.router.ts';
+
+// ES Module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Create hostname and ports
-dotenv.config({ path: path.join(__dirname, '../.env') });
-export const hostname = (process.env.HOSTNAME as string) || '0.0.0.0';
+dotenv.config({
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
+});
+
+export const hostname = (process.env.HOSTNAME as string) || '127.0.0.1';
 export const jsonPort = parseInt(process.env.JSON_PORT as string) || 3002;
 export const expressPort = parseInt(process.env.EXPRESS_PORT as string) || 3001;
 
@@ -21,12 +31,14 @@ const router = jsonServer.router(
   path.join(__dirname, '../public/data/', 'db.json'),
 );
 const middlewares = jsonServer.defaults();
+
 // Security middleware to only allow requests from express server to json server
 type SecurityMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => void;
+
 const securityMiddleware: SecurityMiddleware = function (req, res, next) {
   // Check if request comes from express server port
   if (req.headers['user-agent'] !== 'node') {

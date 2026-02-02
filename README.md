@@ -30,6 +30,20 @@ tick.it ist eine webbasierte Kanban-Board-Anwendung zur Verwaltung von Aufgaben 
 | **Kommunikation**   | REST-API                             | GET, POST, PATCH, DELETE         |
 | **State-Handling**  | Synchronisation zwischen UI & Backend| Lokales Array + API-Calls        |
 
+### Setup:
+#### Dependencies installieren:
+- In /tick.it/client/ pnpm install ausführen
+- In /tick.it/server/ pnpm install ausführen
+
+#### Lokal starten:
+- In /tick.it/client/ pnpm run dev ausführen
+- In /tick.it/server/ pnpm run dev ausführen
+
+#### Im Netzwerk starten:
+- In /tick.it/client/.env.production VITE_BACKEND_URL=http://'IPv4:3001' mit eigener IPv4 Addresse ersetzen
+- In /tick.it/client/ pnpm run dev --host --mode production ausführen
+- In /tick.it/server/ pnpm run dev:prod ausführen
+
 ## Dokumentation von KI-Einsatz
 - Unterstützung in der Codegenerierung mit Claude Sonnet 4.5
 - Fehlersuche mit Claude Sonnet 4.5

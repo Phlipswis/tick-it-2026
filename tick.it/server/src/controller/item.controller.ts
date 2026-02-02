@@ -1,7 +1,7 @@
 // ===== Imports =====
-import { Request, Response } from 'express';
-import { Item } from '../models/item';
-import { JsonService } from '../services/jsonServer.service';
+import type { Request, Response } from 'express';
+import type { Item } from '../models/item.ts';
+import { JsonService } from '../services/jsonServer.service.ts';
 
 /**
  * Controller für Item-Requests

@@ -1,9 +1,9 @@
 // ===== Imports =====
-import { hostname, jsonPort } from '../main';
-import { Item } from '../models/item';
+import type { Item } from '../models/item.ts';
+import { hostname, jsonPort } from '../main.ts';
 
 // ===== Re-Exports =====
-export * as JsonService from './jsonServer.service';
+export * as JsonService from './jsonServer.service.ts';
 
 // ===== GET: Alle Items abrufen =====
 /**

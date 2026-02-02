@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ItemController } from '../controller/item.controller';
+import { ItemController } from '../controller/item.controller.ts';
 
 /**
  * Router for handling item-related requests
