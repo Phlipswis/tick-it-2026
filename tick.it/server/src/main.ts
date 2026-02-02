@@ -4,6 +4,7 @@ import type { Request, Response, NextFunction } from 'express';
 import jsonServer from 'json-server';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import dotenv from 'dotenv';
 
 // Own modules
@@ -25,11 +26,43 @@ export const expressPort = parseInt(process.env.EXPRESS_PORT as string) || 3001;
 // Create express webserver
 const httpServer = express();
 
+// Initialize database file if needed
+const dbPath = path.join(__dirname, '../public/data/', 'db.json');
+const initializeDatabase = () => {
+  try {
+    // Check if file exists
+    if (!fs.existsSync(dbPath)) {
+      // Create directory if it doesn't exist
+      const dbDir = path.dirname(dbPath);
+      if (!fs.existsSync(dbDir)) {
+        fs.mkdirSync(dbDir, { recursive: true });
+      }
+      // Create db.json with correct structure
+      fs.writeFileSync(dbPath, JSON.stringify({ items: [] }, null, 2));
+      console.log('Database file created with initial structure');
+    } else {
+      // File exists, check if it has correct structure
+      const fileContent = fs.readFileSync(dbPath, 'utf-8');
+      const data = JSON.parse(fileContent);
+
+      // If items array doesn't exist, add it
+      if (!data.items) {
+        data.items = [];
+        fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+        console.log('Database file updated with items array');
+      }
+    }
+  } catch (error) {
+    console.error('Error initializing database:', error);
+  }
+};
+
+// Initialize database before starting servers
+initializeDatabase();
+
 // Create JSON server and use as middleware
 const server = jsonServer.create();
-const router = jsonServer.router(
-  path.join(__dirname, '../public/data/', 'db.json'),
-);
+const router = jsonServer.router(dbPath);
 const middlewares = jsonServer.defaults();
 
 // Security middleware to only allow requests from express server to json server
