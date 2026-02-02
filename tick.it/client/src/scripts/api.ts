@@ -1,20 +1,69 @@
 import type { Item } from './item.ts';
 
-const DEFAULT_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:3001';
+// ===== Local Storage Key =====
+const STORAGE_KEY = 'tickit-items';
+let nextId = 1;
 
-// CREATE: Neues Item an den Server senden
+// ===== Helper Functions =====
+
+/**
+ * Load all items from Local Storage
+ */
+function loadFromStorage(): Item[] {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (!data) return [];
+    
+    const items = JSON.parse(data) as Item[];
+    
+    // Determine the highest ID for new items
+    if (items.length > 0) {
+      const maxId = Math.max(...items.map(item => parseInt(item.id)));
+      nextId = maxId + 1;
+    }
+    
+    return items;
+  } catch (error) {
+    console.error('Error loading from Local Storage:', error);
+    return [];
+  }
+}
+
+/**
+ * Save all items to Local Storage
+ */
+function saveToStorage(items: Item[]): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  } catch (error) {
+    console.error('Error saving to Local Storage:', error);
+  }
+}
+
+/**
+ * Generate a new ID
+ */
+function generateId(): string {
+  return String(nextId++);
+}
+
+// ===== API Functions =====
+
+// CREATE: Send new item to storage
 export async function fetchPost(item: Omit<Item, 'id'>): Promise<Item> {
   try {
-    const response = await fetch(`${DEFAULT_URL}/api/items`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(item),
-    });
-    if (!response.ok) {
-      throw new Error(`Error saving: HTTP ${response.status}`);
-    }
-    const createdItem: Item = await response.json();
+    const items = loadFromStorage();
+    
+    const createdItem: Item = {
+      ...item,
+      id: generateId(),
+    };
+    
+    items.push(createdItem);
+    saveToStorage(items);
+    
     window.dispatchEvent(new CustomEvent('itemAdded'));
+    
     return createdItem;
   } catch (error) {
     console.error('Error sending request:', error);
@@ -22,56 +71,84 @@ export async function fetchPost(item: Omit<Item, 'id'>): Promise<Item> {
   }
 }
 
-// READ: Items vom Server abrufen
-export async function fetchGet(url: string = `${DEFAULT_URL}/api/items`) {
+// READ: Retrieve items from storage
+export async function fetchGet(url?: string): Promise<Item[] | null> {
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return (await response.json()) as Item[];
+    return loadFromStorage();
   } catch (error) {
     console.error('Error retrieving data:', error);
     return null;
   }
 }
 
-// UPDATE: Vorhandenes Item teilweise aktualisieren
+// UPDATE: Partially update existing item
 export async function fetchPatch(
   id: string,
   updates: Partial<Item>,
 ): Promise<void> {
   try {
-    const response = await fetch(`${DEFAULT_URL}/api/items/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updates),
-    });
-    if (!response.ok) {
-      console.error(`Error while patching: HTTP ${response.status}`);
+    const items = loadFromStorage();
+    const index = items.findIndex(item => item.id === id);
+    
+    if (index === -1) {
+      console.error('Error while patching: Item not found');
+      return;
     }
+    
+    items[index] = { ...items[index], ...updates };
+    saveToStorage(items);
   } catch (error) {
     console.error('Error while patching:', error);
   }
 }
 
-// DELETE: Item anhand der ID löschen
+// DELETE: Delete item by ID
 export async function fetchDelete(id: string | number): Promise<void> {
-  const numericId = typeof id === 'string' ? Number(id) : id;
-  if (isNaN(numericId)) {
+  const stringId = typeof id === 'number' ? String(id) : id;
+  
+  if (!stringId) {
     console.error('Invalid ID for deletion', id);
     return;
   }
+  
   try {
-    const response = await fetch(`${DEFAULT_URL}/api/items/${numericId}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      console.error(`Error while deleting: HTTP ${response.status}`);
-    }
+    const items = loadFromStorage();
+    const filteredItems = items.filter(item => item.id !== stringId);
+    
+    saveToStorage(filteredItems);
   } catch (error) {
     console.error('Error while deleting:', error);
+  }
+}
+
+// ===== Additional Utility Functions =====
+
+/**
+ * Clear all items (for testing/reset)
+ */
+export function clearAllItems(): void {
+  localStorage.removeItem(STORAGE_KEY);
+  nextId = 1;
+  console.log('All items cleared.');
+}
+
+/**
+ * Export all items as JSON string
+ */
+export function exportItems(): string {
+  const items = loadFromStorage();
+  return JSON.stringify(items, null, 2);
+}
+
+/**
+ * Import items from JSON string
+ */
+export function importItems(jsonString: string): void {
+  try {
+    const items = JSON.parse(jsonString) as Item[];
+    saveToStorage(items);
+    console.log(`${items.length} items imported.`);
+  } catch (error) {
+    console.error('Error importing items:', error);
   }
 }
