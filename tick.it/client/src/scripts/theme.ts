@@ -3,7 +3,7 @@ type Theme = 'light' | 'dark' | 'high-contrast';
 
 const THEME_KEY = 'tick-it-theme';
 
-// Get current theme from localStorage or default to 'dark'
+// Get current theme from localStorage or default to 'light' if high contrast is not preferred
 function getCurrentTheme(): Theme {
   const savedTheme = localStorage.getItem(THEME_KEY);
   if (
@@ -12,6 +12,9 @@ function getCurrentTheme(): Theme {
     savedTheme === 'high-contrast'
   ) {
     return savedTheme;
+  } //If no theme is saved and prefers-contrast is set to more, set high-contrast as theme
+  if (window.matchMedia('(prefers-contrast: more)').matches) {
+    return 'high-contrast';
   }
   return 'light';
 }
