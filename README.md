@@ -1,5 +1,5 @@
 # tick.it - Webapp Kanban Board
-![Screenshot](screenshot.png)
+![Screenshot](Screenshot.png)
 
 tick.it ist eine webbasierte Kanban-Board-Anwendung zur Verwaltung von Aufgaben und Workflows. Die Anwendung ermöglicht es, Aufgaben als Karten zu erstellen, zu bearbeiten, zu verschieben und zu löschen.
 
@@ -16,6 +16,7 @@ tick.it ist eine webbasierte Kanban-Board-Anwendung zur Verwaltung von Aufgaben 
     - Mobile (<= 1080px)
     - Tablet (1081px bis 1919px)
     - Desktop (>= 1920px)   
+- Reduced Motion Implementierung
 - Speicherung der Daten über ein Backend mit REST-API
 
 

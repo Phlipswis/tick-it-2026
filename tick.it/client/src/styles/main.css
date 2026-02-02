@@ -54,12 +54,6 @@ body[data-theme='high-contrast'] {
 /*      Global Styles       */
 /* ------------------------ */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
@@ -214,4 +208,23 @@ header {
   body {
     padding-top: 120px;
   }
+}
+
+/* ------------------------ */
+/*      Accessibility       */
+/* ------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
